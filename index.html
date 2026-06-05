@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pytest Mastery — 6-Week Course</title>
+<style>
+  :root {
+    --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
+    --bg: #ffffff; --bg2: #f8f8f6; --border: #e5e5e0;
+    --text: #111; --muted: #666; --code-bg: #1e1e2e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg2); color: var(--text); line-height: 1.6; }
+  header { background: var(--green-dark); color: #fff; padding: 2rem; text-align: center; }
+  header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 6px; }
+  header p { opacity: 0.8; font-size: 1rem; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .tab { padding: 8px 20px; font-size: 14px; border-radius: 24px; border: 1.5px solid var(--border); background: var(--bg); color: var(--muted); cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.15s; }
+  .tab:hover { border-color: var(--green); color: var(--green); }
+  .tab.active { background: var(--green); color: #fff; border-color: var(--green); }
+  .section { display: none; } .section.active { display: block; }
+  .wgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
+  .wcard { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px; cursor: pointer; transition: all 0.15s; }
+  .wcard:hover, .wcard.sel { border-color: var(--green); background: var(--green-light); }
+  .wn { font-size: 11px; font-weight: 700; color: var(--green-dark); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  .wt { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .ws { font-size: 11px; color: var(--muted); }
+  .box { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+  .box h3 { font-size: 17px; font-weight: 700; margin-bottom: 1rem; color: var(--green-dark); }
+  .drow { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .drow:last-child { border-bottom: none; }
+  .dbadge { min-width: 52px; background: var(--green); color: #fff; font-size: 11px; font-weight: 700; border-radius: 24px; padding: 3px 8px; text-align: center; flex-shrink: 0; margin-top: 3px; }
+  .dt { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .dd { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .fb { padding: 5px 14px; font-size: 12px; border-radius: 24px; border: 1.5px solid var(--border); background: var(--bg); color: var(--muted); cursor: pointer; font-family: inherit; font-weight: 500; }
+  .fb.active { background: var(--green); color: #fff; border-color: var(--green); }
+  .excard { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 12px; }
+  .exhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .extitle { font-size: 15px; font-weight: 700; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 24px; font-weight: 700; }
+  .beg { background: #E1F5EE; color: #085041; }
+  .int { background: #FEF3C7; color: #78350F; }
+  .adv { background: #FEE2E2; color: #7F1D1D; }
+  .exdesc { font-size: 13px; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
+  pre { background: var(--code-bg); border-radius: 8px; padding: 14px; font-size: 12.5px; color: #cdd6f4; overflow-x: auto; line-height: 1.7; margin-bottom: 10px; white-space: pre; font-family: 'Fira Code', 'Courier New', monospace; }
+  .kw { color: #89b4fa; } .fn { color: #a6e3a1; } .st { color: #f9e2af; } .cm { color: #6c7086; font-style: italic; } .dc { color: #cba6f7; } .op { color: #89dceb; }
+  .solvebtn { font-size: 12px; padding: 6px 16px; border-radius: 24px; border: 1.5px solid var(--border); background: var(--bg2); color: var(--muted); cursor: pointer; font-family: inherit; font-weight: 500; }
+  .solvebtn:hover { border-color: var(--green); color: var(--green); }
+  .qitem { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+  .qhead { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; cursor: pointer; }
+  .qtext { font-size: 14px; font-weight: 600; flex: 1; padding-right: 12px; line-height: 1.4; }
+  .qmeta { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+  .qcat { font-size: 11px; padding: 3px 9px; border-radius: 24px; background: var(--green-light); color: var(--green-dark); font-weight: 700; }
+  .qtog { font-size: 22px; color: var(--muted); transition: transform 0.2s; line-height: 1; user-select: none; }
+  .qbody { display: none; padding: 0 16px 14px; border-top: 1px solid var(--border); }
+  .qans { font-size: 13px; color: #333; line-height: 1.7; margin-top: 12px; }
+  .qitem.open .qbody { display: block; }
+  .qitem.open .qtog { transform: rotate(45deg); }
+  .rmrow { display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .rmrow:last-child { border-bottom: none; }
+  .rmnum { width: 34px; height: 34px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; flex-shrink: 0; }
+  .rmt { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .rmd { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .prompt-box { background: var(--green-dark); color: #e8f5f1; border-radius: 12px; padding: 1.5rem; margin-bottom: 16px; }
+  .prompt-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #9de8cc; }
+  .prompt-box p { font-size: 13px; line-height: 1.6; margin-bottom: 10px; opacity: 0.9; }
+  .prompt-code { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px; font-size: 12px; font-family: monospace; line-height: 1.7; white-space: pre-wrap; color: #d4f5e9; }
+  .copybtn { margin-top: 10px; font-size: 12px; padding: 6px 16px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.3); background: transparent; color: #9de8cc; cursor: pointer; font-family: inherit; }
+  .copybtn:hover { background: rgba(255,255,255,0.1); }
+  footer { text-align: center; padding: 2rem; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧪 Pytest Mastery</h1>
+  <p>40 minutes a day · 6 weeks · From zero to senior-level confidence</p>
+</header>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('curriculum', this)">📅 Curriculum</button>
+    <button class="tab" onclick="showTab('exercises', this)">💻 Exercises</button>
+    <button class="tab" onclick="showTab('interviews', this)">🎯 Interview Q&A</button>
+    <button class="tab" onclick="showTab('roadmap', this)">🗺 Skill Roadmap</button>
+    <button class="tab" onclick="showTab('claude', this)">🤖 Study with Claude</button>
+  </div>
+
+  <div id="curriculum" class="section active"></div>
+  <div id="exercises" class="section"></div>
+  <div id="interviews" class="section"></div>
+  <div id="roadmap" class="section"></div>
+  <div id="claude" class="section"></div>
+</div>
+
+<footer>
+  MIT License · Contribute at github.com/YOUR_USERNAME/pytest-mastery · Built for students, by students
+</footer>
+
+<script>
+var aw = 0, ef = 'All', qf = 'All';
+
+var weeks = [
+  {n:1, t:'Foundations', s:'Setup · Assertions · Discovery', days:[
+    {d:'Day 1', t:'Install & first test', desc:'pip install pytest, write test_*.py, understand assert rewriting, run pytest -v'},
+    {d:'Day 2', t:'Test discovery rules', desc:'test_ prefix, Test classes, conftest.py location, pytest.ini basics'},
+    {d:'Day 3', t:'Assertions deep dive', desc:'Assert rewriting magic, pytest.raises, pytest.warns, match= regex'},
+    {d:'Day 4', t:'Running tests selectively', desc:'-k expression, -m marker, -x stop-on-fail, --tb short/long/no'},
+    {d:'Day 5', t:'Organizing test files', desc:'Folder structure, __init__.py vs no-__init__, src layout best practice'}
+  ]},
+  {n:2, t:'Fixtures', s:'Core power feature', days:[
+    {d:'Day 1', t:'Fixture basics', desc:'@pytest.fixture decorator, using fixtures as test params, the request object'},
+    {d:'Day 2', t:'Fixture scopes', desc:'function / class / module / session — when each makes sense, scope bugs'},
+    {d:'Day 3', t:'conftest.py patterns', desc:'Shared fixtures, discovery order up the tree, overriding parent fixtures'},
+    {d:'Day 4', t:'Yield fixtures', desc:'Setup + teardown with yield, why it beats add_finalizer'},
+    {d:'Day 5', t:'Fixture params', desc:'params=[], request.param, indirect=True, custom IDs for readable names'}
+  ]},
+  {n:3, t:'Parametrize & Marks', s:'DRY test writing', days:[
+    {d:'Day 1', t:'@pytest.mark.parametrize', desc:'Single and multiple params, argnames as string vs list, argvalues'},
+    {d:'Day 2', t:'Nested parametrize', desc:'Cartesian products, pytest.param with per-case marks and IDs'},
+    {d:'Day 3', t:'Built-in marks', desc:'skip, skipif, xfail, filterwarnings — with real use cases'},
+    {d:'Day 4', t:'Custom marks', desc:'Registering marks in pytest.ini, -m flag, strict= to catch typos'},
+    {d:'Day 5', t:'IDs & mark combos', desc:'Readable test IDs, combining custom marks with parametrize'}
+  ]},
+  {n:4, t:'Mocking & Patching', s:'Isolation mastery', days:[
+    {d:'Day 1', t:'unittest.mock basics', desc:'MagicMock, Mock, return_value, side_effect, call_args_list'},
+    {d:'Day 2', t:'pytest-mock', desc:'mocker fixture, mocker.patch, mocker.spy, automatic cleanup'},
+    {d:'Day 3', t:'monkeypatch fixture', desc:'setattr, setenv, setitem, chdir, syspath_prepend with auto-restore'},
+    {d:'Day 4', t:'Patching strategies', desc:'Where to patch (target module not source), context managers, async mocks'},
+    {d:'Day 5', t:'Mocking anti-patterns', desc:'Over-mocking, testing implementation details, when NOT to mock'}
+  ]},
+  {n:5, t:'Advanced Patterns', s:'Senior-level skills', days:[
+    {d:'Day 1', t:'Plugin ecosystem', desc:'pytest-cov, pytest-xdist, pytest-asyncio, pytest-django, pytest-httpx'},
+    {d:'Day 2', t:'Coverage mastery', desc:'--cov, --cov-branch, .coveragerc, HTML reports, --cov-fail-under'},
+    {d:'Day 3', t:'Async testing', desc:'pytest-asyncio, asyncio_mode=auto, async fixtures, mocking coroutines'},
+    {d:'Day 4', t:'Custom plugin hooks', desc:'pytest_addoption, pytest_collection_modifyitems, pytest_runtest_makereport'},
+    {d:'Day 5', t:'Fixture factory patterns', desc:'Fixture factories, lazy fixtures, chaining fixtures for complex setups'}
+  ]},
+  {n:6, t:'Real-World & CI', s:'Production readiness', days:[
+    {d:'Day 1', t:'Testing Django/Flask', desc:'pytest-django, rf/client/db fixtures, transactional_db, settings override'},
+    {d:'Day 2', t:'Testing HTTP APIs', desc:'responses lib, pytest-httpx, requests-mock, VCR cassettes for replay'},
+    {d:'Day 3', t:'CI integration', desc:'GitHub Actions config, --junitxml reports, -n auto parallelism, caching'},
+    {d:'Day 4', t:'Performance & debugging', desc:'--durations, -s stdout, --pdb on failure, pytest-benchmark, flaky tests'},
+    {d:'Day 5', t:'Capstone project', desc:'Full suite: CRUD app, fixtures, mocking, 90% branch coverage, CI pipeline'}
+  ]}
+];
+
+var exercises = [
+  {t:'Parametrized calculator tests', lv:'beginner', cat:'Parametrize',
+   desc:'Write test_calculator.py using @pytest.mark.parametrize covering add, subtract, divide — including zero-division edge case with pytest.param.',
+   code:'<span class="dc">@pytest.mark.parametrize</span>(<span class="st">"a,b,expected"</span>, [\n    (<span class="op">10</span>, <span class="op">2</span>, <span class="op">5.0</span>),\n    (<span class="op">9</span>,  <span class="op">3</span>, <span class="op">3.0</span>),\n    pytest.param(<span class="op">1</span>, <span class="op">0</span>, <span class="kw">None</span>, marks=pytest.mark.xfail),\n])\n<span class="kw">def</span> <span class="fn">test_divide</span>(a, b, expected):\n    <span class="kw">assert</span> divide(a, b) == expected'},
+  {t:'Session DB + per-test rollback', lv:'intermediate', cat:'Fixtures',
+   desc:'conftest.py: create SQLite in-memory DB once per session. Add autouse fixture that deletes all rows after every test.',
+   code:'<span class="dc">@pytest.fixture</span>(scope=<span class="st">"session"</span>)\n<span class="kw">def</span> <span class="fn">db</span>():\n    conn = sqlite3.connect(<span class="st">":memory:"</span>)\n    conn.execute(<span class="st">"CREATE TABLE users(id INT, name TEXT)"</span>)\n    <span class="kw">yield</span> conn\n    conn.close()\n\n<span class="dc">@pytest.fixture</span>(autouse=<span class="kw">True</span>)\n<span class="kw">def</span> <span class="fn">rollback</span>(db):\n    <span class="kw">yield</span>\n    db.execute(<span class="st">"DELETE FROM users"</span>)'},
+  {t:'Mock an external API call', lv:'intermediate', cat:'Mocking',
+   desc:'Use pytest-mock to patch requests.get so tests never hit the real network. Assert the mock was called with the correct URL.',
+   code:'<span class="kw">def</span> <span class="fn">test_fetch_user</span>(mocker):\n    mock = mocker.patch(<span class="st">"myapp.api.requests.get"</span>)\n    mock.return_value.json.return_value = {<span class="st">"id"</span>: <span class="op">1</span>, <span class="st">"name"</span>: <span class="st">"Alice"</span>}\n    mock.return_value.status_code = <span class="op">200</span>\n    result = fetch_user(<span class="op">1</span>)\n    mock.assert_called_once_with(<span class="st">"https://api.example.com/users/1"</span>)\n    <span class="kw">assert</span> result[<span class="st">"name"</span>] == <span class="st">"Alice"</span>'},
+  {t:'Custom --slow flag plugin', lv:'advanced', cat:'Plugins',
+   desc:'Write conftest.py that adds a --slow CLI flag. Tests marked @pytest.mark.slow are skipped unless --slow is passed at runtime.',
+   code:'<span class="kw">def</span> <span class="fn">pytest_addoption</span>(parser):\n    parser.addoption(<span class="st">"--slow"</span>, action=<span class="st">"store_true"</span>)\n\n<span class="kw">def</span> <span class="fn">pytest_collection_modifyitems</span>(config, items):\n    <span class="kw">if not</span> config.getoption(<span class="st">"--slow"</span>):\n        skip = pytest.mark.skip(reason=<span class="st">"use --slow"</span>)\n        <span class="kw">for</span> item <span class="kw">in</span> items:\n            <span class="kw">if</span> <span class="st">"slow"</span> <span class="kw">in</span> item.keywords:\n                item.add_marker(skip)'},
+  {t:'Async test with pytest-asyncio', lv:'advanced', cat:'Async',
+   desc:'Test an async fetch function. Use pytest-asyncio and mock httpx.AsyncClient so no real HTTP calls happen.',
+   code:'<span class="dc">@pytest.mark.asyncio</span>\n<span class="kw">async def</span> <span class="fn">test_async_fetch</span>(mocker):\n    mock = mocker.patch(<span class="st">"httpx.AsyncClient.get"</span>)\n    mock.return_value = mocker.AsyncMock()\n    mock.return_value.json.return_value = {<span class="st">"ok"</span>: <span class="kw">True</span>}\n    result = <span class="kw">await</span> async_fetch(<span class="st">"https://api.example.com"</span>)\n    <span class="kw">assert</span> result[<span class="st">"ok"</span>] <span class="kw">is True</span>'},
+  {t:'90%+ branch coverage CI gate', lv:'advanced', cat:'Coverage',
+   desc:'Configure pytest-cov in pyproject.toml with branch coverage. CI must fail if coverage drops below 90%.',
+   code:'<span class="cm"># pyproject.toml</span>\n[tool.pytest.ini_options]\naddopts = <span class="st">"--cov=myapp --cov-branch --cov-fail-under=90"</span>\n\n[tool.coverage.run]\nbranch = <span class="kw">true</span>\nomit = [<span class="st">"*/tests/*"</span>]\n\n<span class="cm"># run:</span>\npytest --cov-report=html'}
+];
+
+var questions = [
+  {q:'What is the difference between function-scope and session-scope fixtures?', cat:'Fixtures',
+   a:'Function scope (default) creates a fresh instance per test — ideal for isolation. Session scope creates the fixture once for the entire run — ideal for expensive setup like DB connections or HTTP clients. Wrong scope is the #1 cause of test pollution bugs in real projects. Class scope is per test class; module scope is per file.'},
+  {q:'How does pytest fixture injection work under the hood?', cat:'Fixtures',
+   a:"Pytest inspects each test function's parameter names at collection time using Python's inspect module, matches them to registered fixture names via the FixtureManager, builds a dependency graph, and resolves them in the correct order. This is why you never import fixtures — you just name the parameter and pytest wires it up automatically."},
+  {q:'What is the difference between monkeypatch and unittest.mock.patch?', cat:'Mocking',
+   a:'monkeypatch is pytest-native: patches attributes/env vars and auto-restores after each test with no decorator needed. unittest.mock.patch is stdlib and gives full MagicMock power (call counts, side_effect chains, spec=). pytest-mock\'s mocker fixture wraps mock.patch with automatic cleanup. Use monkeypatch for simple swaps; use mocker for full call verification.'},
+  {q:'How do you share fixtures across multiple test files?', cat:'Fixtures',
+   a:'Place them in conftest.py. Pytest discovers conftest.py files up the directory tree — no imports needed. A conftest.py at tests/ is available to everything under it. You can have multiple conftest.py at different levels; the most-local fixture wins when names clash. This is one of pytest\'s most powerful design choices.'},
+  {q:'Explain xfail and when you would use strict=True.', cat:'Marks',
+   a:'@pytest.mark.xfail marks a test expected to fail — it shows as "xfailed" not as a test failure. If it unexpectedly passes it becomes "xpassed". With strict=True, an xpassed result is a hard CI failure — essential for ensuring you remove the xfail mark once a known bug is fixed.',
+   code:'<span class="dc">@pytest.mark.xfail</span>(strict=<span class="kw">True</span>, reason=<span class="st">"Bug #123 — fix in PR #456"</span>)\n<span class="kw">def</span> <span class="fn">test_known_bug</span>():\n    <span class="kw">assert</span> broken_function() == <span class="op">42</span>'},
+  {q:'How do you run tests in parallel with pytest?', cat:'CI/Performance',
+   a:'Install pytest-xdist and run with -n auto or -n 4. Each worker is a separate process. Critical gotcha: session-scoped fixtures are NOT shared across workers — each worker creates its own session. Use tmp_path_factory for temp file isolation, and ensure each worker has its own isolated database.',
+   code:'pytest -n auto --dist=loadfile\npytest -n 4 --dist=loadscope'},
+  {q:'What is indirect parametrize and when is it useful?', cat:'Parametrize',
+   a:'With indirect=True the param value is passed to the fixture as request.param instead of directly to the test. Useful when parametrized setup needs logic — creating different user roles, database states, or config environments without duplicating fixture code.',
+   code:'<span class="dc">@pytest.mark.parametrize</span>(<span class="st">"user"</span>, [<span class="st">"admin"</span>, <span class="st">"viewer"</span>], indirect=<span class="kw">True</span>)\n<span class="kw">def</span> <span class="fn">test_access</span>(user): ...\n\n<span class="dc">@pytest.fixture</span>\n<span class="kw">def</span> <span class="fn">user</span>(request):\n    <span class="kw">return</span> create_user(role=request.param)'},
+  {q:'What hooks does pytest expose for custom plugin development?', cat:'Plugins',
+   a:'Key hooks: pytest_configure (startup/config), pytest_addoption (add CLI flags), pytest_collection_modifyitems (filter, reorder, or skip collected tests), pytest_runtest_makereport (inspect pass/fail results per phase), pytest_sessionfinish (after all tests done). Implement in conftest.py for local use, or package with setuptools entry_point for installable plugins.'},
+  {q:'How do you assert a function raises a specific exception with the right message?', cat:'Assertions',
+   a:'Use pytest.raises as a context manager with match= (a regex pattern). The ExceptionInfo object gives access to .value, .type, .traceback for further assertions. This is more reliable than try/except in tests because the test fails clearly if no exception is raised.',
+   code:'<span class="kw">with</span> pytest.raises(ValueError, match=<span class="st">r"invalid input: \\d+"</span>):\n    process(<span class="op">-1</span>)\n\n<span class="cm"># Or capture for deeper inspection:</span>\n<span class="kw">with</span> pytest.raises(ValueError) <span class="kw">as</span> exc:\n    process(<span class="op">-1</span>)\n<span class="kw">assert</span> exc.type <span class="kw">is</span> ValueError'},
+  {q:'What is the difference between tmp_path and tmpdir?', cat:'Fixtures',
+   a:'tmp_path returns a pathlib.Path object — modern, recommended, pythonic. tmpdir returns a legacy py.path.local object from an older library. Both give a unique temp directory per test that is automatically cleaned up. Use tmp_path_factory for session-scoped shared temp directories across multiple tests.'},
+  {q:'How do you test a Click or argparse CLI tool?', cat:'Real-world',
+   a:'For Click, use click.testing.CliRunner — it captures output and exit codes cleanly without subprocess overhead. For argparse, monkeypatch sys.argv and call main() directly, then use capsys to capture stdout/stderr. Avoid subprocess.run in unit tests — it is slow and makes debugging hard.',
+   code:'result = runner.invoke(cli, [<span class="st">"--name"</span>, <span class="st">"Alice"</span>])\n<span class="kw">assert</span> result.exit_code == <span class="op">0</span>\n<span class="kw">assert</span> <span class="st">"Hello Alice"</span> <span class="kw">in</span> result.output'},
+  {q:'How would you debug a flaky test in pytest?', cat:'CI/Performance',
+   a:'Step 1: reproduce with pytest-repeat (--count=20). Step 2: detect ordering issues with pytest-randomly (--randomly-seed=last). Step 3: run with -s to see stdout/log output. Step 4: use --pdb to drop into debugger on failure. Step 5: check for shared mutable state in session/module fixtures. Step 6: use --durations=10 to spot timing-dependent flakes.'}
+];
+
+var roadmap = [
+  {n:1, t:'Weeks 1–2: Solid fundamentals', d:'You write clean organized tests. Fixtures, scopes, parametrize, and marks feel natural. No duplicate test logic anywhere in your codebase.'},
+  {n:2, t:'Weeks 3–4: Mocking & isolation mastery', d:'You isolate any unit from its dependencies confidently. You know when to reach for monkeypatch vs mocker vs a manual fake. Your tests never hit the real network or disk.'},
+  {n:3, t:'Week 5: Plugin ecosystem fluency', d:'You reach for the right plugin without searching — xdist, cov, asyncio, django. You have written at least one custom conftest hook that your team actually uses.'},
+  {n:4, t:'Week 6: Production-grade test suites', d:'You have shipped a suite with 85%+ coverage, parallel CI execution, and a clear fixture hierarchy. You have diagnosed and fixed flaky tests in a real codebase under pressure.'},
+  {n:5, t:'The 6-year signal: judgment', d:'You advise others on what NOT to test, when mocking hurts maintainability, and how to keep suites fast as they grow to thousands of tests. You have fought fixture scope bugs in production CI. This judgment gap — knowing the tradeoffs, not just the syntax — is what separates 2 years from 6.'}
+];
+
+var claudePrompts = [
+  {t:'Session starter', p:'I am learning pytest from scratch with a goal of being interview-ready at a senior (6-year experience) level.\nI am on Week [X], Day [Y]. Today\'s topic: [TOPIC].\n\nPlease be my tutor. When I ask questions:\n- Give me the "why" behind every concept, not just the "what"\n- Show real-world examples, not toy ones\n- Point out common mistakes and anti-patterns\n- Review my code like a senior engineer\n\nStart: give me a 5-minute overview of today\'s topic.'},
+  {t:'Concept deep dive', p:'Explain [CONCEPT] in pytest:\n1. One-sentence definition\n2. Why it exists (what problem it solves)\n3. Minimal code example\n4. Realistic production-style example\n5. The 2-3 most common mistakes people make with it'},
+  {t:'Code review', p:'Review this pytest code like a senior engineer:\n- Is the structure correct?\n- Are there any bugs or anti-patterns?\n- Is there a more idiomatic way to write this?\n- What would you change and why?\n\n[PASTE YOUR CODE HERE]'},
+  {t:'Mock interview', p:'You are a senior Python engineer interviewing me.\nAsk me one pytest interview question at a time.\nAfter my answer, give feedback:\n- What I got right\n- What I missed\n- What a perfect answer includes\n- Score out of 10\n\nStart with a medium-difficulty question about fixtures.'},
+  {t:'Debug help', p:'My pytest test is failing and I don\'t understand why.\nTest code: [PASTE]\nError output: [PASTE]\nCode being tested: [PASTE]\n\nWalk me through exactly what is happening and how to fix it.'},
+  {t:'End-of-week quiz', p:'I just finished Week [X] of pytest. Topics: [LIST THEM].\n\nQuiz me with 5 questions — mix conceptual and "what does this code do".\nAfter all 5, tell me which areas I should review before moving on.'}
+];
+
+function showTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+function selectWeek(i) { aw = i; buildCurriculum(); }
+
+function buildCurriculum() {
+  var html = '<div class="wgrid">';
+  for (var i = 0; i < weeks.length; i++) {
+    html += '<div class="wcard' + (i === aw ? ' sel' : '') + '" onclick="selectWeek(' + i + ')">';
+    html += '<div class="wn">Week ' + weeks[i].n + '</div><div class="wt">' + weeks[i].t + '</div><div class="ws">' + weeks[i].s + '</div></div>';
+  }
+  html += '</div><div class="box"><h3>Week ' + weeks[aw].n + ': ' + weeks[aw].t + ' — Daily Plan</h3>';
+  for (var j = 0; j < weeks[aw].days.length; j++) {
+    var d = weeks[aw].days[j];
+    html += '<div class="drow"><div class="dbadge">' + d.d + '</div><div><div class="dt">' + d.t + '</div><div class="dd">' + d.desc + '</div></div></div>';
+  }
+  html += '</div>';
+  document.getElementById('curriculum').innerHTML = html;
+}
+
+function setEF(c) { ef = c; buildExercises(); }
+function buildExercises() {
+  var cats = ['All', 'Parametrize', 'Fixtures', 'Mocking', 'Plugins', 'Async', 'Coverage'];
+  var html = '<div class="filters">';
+  cats.forEach(function(c) { html += '<button class="fb' + (ef === c ? ' active' : '') + '" onclick="setEF(\'' + c + '\')">' + c + '</button>'; });
+  html += '</div>';
+  exercises.forEach(function(e) {
+    if (ef !== 'All' && e.cat !== ef) return;
+    var lv = e.lv === 'beginner' ? 'beg' : e.lv === 'intermediate' ? 'int' : 'adv';
+    html += '<div class="excard"><div class="exhead"><span class="extitle">' + e.t + '</span><span class="badge ' + lv + '">' + e.lv + '</span></div>';
+    html += '<div class="exdesc">' + e.desc + '</div><pre>' + e.code + '</pre>';
+    html += '<button class="solvebtn">📋 Copy exercise name to ask Claude</button></div>';
+  });
+  document.getElementById('exercises').innerHTML = html;
+}
+
+function setQF(c) { qf = c; buildInterviews(); }
+function buildInterviews() {
+  var cats = ['All', 'Fixtures', 'Mocking', 'Marks', 'Parametrize', 'Assertions', 'Plugins', 'CI/Performance', 'Real-world'];
+  var html = '<div class="filters">';
+  cats.forEach(function(c) { html += '<button class="fb' + (qf === c ? ' active' : '') + '" onclick="setQF(\'' + c + '\')">' + c + '</button>'; });
+  html += '</div>';
+  questions.forEach(function(q, i) {
+    if (qf !== 'All' && q.cat !== qf) return;
+    html += '<div class="qitem" id="q' + i + '"><div class="qhead" onclick="tQ(' + i + ')">';
+    html += '<div class="qtext">' + q.q + '</div><div class="qmeta"><span class="qcat">' + q.cat + '</span><span class="qtog">+</span></div></div>';
+    html += '<div class="qbody"><div class="qans">' + q.a + '</div>';
+    if (q.code) html += '<pre>' + q.code + '</pre>';
+    html += '</div></div>';
+  });
+  document.getElementById('interviews').innerHTML = html;
+}
+
+function tQ(i) { var el = document.getElementById('q' + i); if (el) el.classList.toggle('open'); }
+
+function buildRoadmap() {
+  var html = '<div class="box"><h3>Your path to 6-year experience level</h3>';
+  roadmap.forEach(function(r) {
+    html += '<div class="rmrow"><div class="rmnum">' + r.n + '</div><div><div class="rmt">' + r.t + '</div><div class="rmd">' + r.d + '</div></div></div>';
+  });
+  html += '</div>';
+  document.getElementById('roadmap').innerHTML = html;
+}
+
+function buildClaude() {
+  var html = '<div class="box" style="margin-bottom:16px"><h3 style="margin-bottom:12px">How to use Claude AI as your pytest tutor</h3><p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:0">Copy any prompt below into <strong><a href="https://claude.ai" target="_blank" style="color:var(--green)">claude.ai</a></strong>. Fill in the brackets, then study. Claude will explain concepts, review your code, quiz you, and run mock interviews.</p></div>';
+  claudePrompts.forEach(function(p) {
+    html += '<div class="prompt-box"><h3>' + p.t + '</h3><div class="prompt-code">' + p.p + '</div><button class="copybtn" onclick="copyPrompt(this, \'' + encodeURIComponent(p.p) + '\')">📋 Copy prompt</button></div>';
+  });
+  document.getElementById('claude').innerHTML = html;
+}
+
+function copyPrompt(btn, encoded) {
+  navigator.clipboard.writeText(decodeURIComponent(encoded)).then(function() {
+    btn.textContent = '✅ Copied!';
+    setTimeout(function() { btn.textContent = '📋 Copy prompt'; }, 2000);
+  });
+}
+
+buildCurriculum();
+buildExercises();
+buildInterviews();
+buildRoadmap();
+buildClaude();
+</script>
+</body>
+</html>
