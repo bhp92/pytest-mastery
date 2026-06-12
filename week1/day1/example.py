@@ -65,8 +65,8 @@ def test_is_even_returns_bool_not_int():
     # but if someone rewrites it as `return not n % 2`, it still works
     # for truthiness but returns an int (0 or 1). Be explicit.
     result = is_even(4)
-    assert result is True          # `assert result` would also pass for int 1
-    assert isinstance(result, bool)
+    assert result is True               # Passes for True and 1, `assert result` would also pass for int 1;
+    assert isinstance(result, bool)     # Passes for True
 
 
 def test_is_even_false_case():

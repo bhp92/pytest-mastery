@@ -31,15 +31,15 @@ At a payments company, a new engineer writes:
 ```python
 def test_charge_amount():
     result = process_charge(100)
-    assert result == True
+    assert result == True       # Will pass for result = 1 also as bool is subclass of int. True == 1 -> True & False == 0 -> Ture
 ```
 
 This passes. But `process_charge` returns `1` (an integer), not `True`. In Python, `1 == True` is `True`. The test is lying. A senior engineer writes:
 
 ```python
-assert result is True          # catches int/bool distinction
+assert result is True          # catches int/bool distinction, Also : Is this object the singleton boolean True
 # or better:
-assert isinstance(result, bool) and result
+assert isinstance(result, bool) and result # if type(result) == bool and result == Ture -> pass
 ```
 
 This is Day 1 thinking: `assert` is powerful, but you must be precise about *what* you're asserting.

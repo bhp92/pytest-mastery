@@ -55,6 +55,8 @@ def repeat_string(s, n):
 
 # YOUR CODE HERE
 
+def test_freezing_point():
+    assert celsius_to_fahrenheit(0) == 32.0
 
 # ──────────────────────────────────────────────────────────────
 # TASK 2 — Multiple assertions in one test
@@ -67,6 +69,9 @@ def repeat_string(s, n):
 
 # YOUR CODE HERE
 
+def test_boiling_and_body_temp():
+    assert celsius_to_fahrenheit(100) == 212.0
+    assert celsius_to_fahrenheit(37) == 98.6
 
 # ──────────────────────────────────────────────────────────────
 # TASK 3 — Testing branches (member vs non-member)
@@ -77,6 +82,11 @@ def repeat_string(s, n):
 
 # YOUR CODE HERE
 
+def test_member_discount():
+    assert get_discount(100, True) == 80.0
+    
+def test_nonmember_discount():
+    assert get_discount(100, False) == 95.0
 
 # ──────────────────────────────────────────────────────────────
 # TASK 4 — Testing that an exception is raised
@@ -90,6 +100,10 @@ def repeat_string(s, n):
 
 # YOUR CODE HERE
 
+def test_negative_price_raises():
+    import pytest
+    with pytest.raises(ValueError, match ="negative"):
+        get_discount(-10, True)
 
 # ──────────────────────────────────────────────────────────────
 # BONUS — Edge cases & type precision
@@ -104,3 +118,19 @@ def repeat_string(s, n):
 # (Write your answer as a comment above the test)
 
 # YOUR CODE HERE
+
+def test_repeat_string_edge_cases():
+    # Store results once - no double calling, clear variable names
+    normal = repeat_string("ha", 3)
+    zero = repeat_string("hi", 0)
+    negative = repeat_string("hi", -5)
+
+    # Type assertions first - if the type is wrong, nothing else matters
+    assert isinstance(normal, str), f"Expected str, got {type(normal)}"
+    assert isinstance(zero, str), f"Expected str, got {type(zero)}"
+    assert isinstance(negative, str), f"Expected str, got {type(negative)}"
+
+    # Value assertion separately - each failure message is precise
+    assert normal == "hahaha"
+    assert zero == ""
+    assert negative == ""
