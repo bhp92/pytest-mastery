@@ -10,17 +10,36 @@ Below are exact prompts — copy, paste, and customize.
 Paste this at the start of every Claude conversation:
 
 ```
-I am learning pytest from scratch with a goal of being interview-ready at a senior (6-year experience) level.
-I am currently on [WEEK X, DAY Y] of my course. Today's topic is: [TOPIC].
+I am learning pytest using the pytest-mastery course (github.com/bhp92/pytest-mastery).
+My goal is to be interview-ready at a senior (6-year experience) level.
 
-Please be my tutor for this session. When I ask questions:
-- Give me the "why" behind every concept, not just the "what"
-- Show real-world examples, not toy ones
-- Point out common mistakes and anti-patterns
-- If I write code, review it like a senior engineer doing a code review
-- If I seem to misunderstand something, correct me directly
+Today is: Week [] Day [] — [Topic Name]
 
-Let's start: can you give me a 5-minute overview of today's topic?
+Please do the following IN ORDER:
+
+STEP 1 — EXPLAIN THE TOPIC (10 min)
+- What today's topic is and why it exists
+- Key concepts I need to understand
+- One real-world production example
+- The 2 most common beginner mistakes
+
+STEP 2 — SHOW ME A WORKING EXAMPLE
+Write a clean commented code example demonstrating today's topic.
+
+STEP 3 — CREATE MY EXERCISE FILE
+Create a file called exercises/week1_day1.py with:
+- 4 tasks I must complete myself (comments only, no solutions)
+- Tasks build on each other
+- A BONUS task at the bottom
+- Run instructions at the top
+
+STEP 4 — AFTER I PASTE MY SOLUTION
+- Tell me what I got right
+- Tell me what's wrong
+- Show me the senior-engineer way
+- One thing to remember from today
+
+I am ready. Please start with STEP 1.
 ```
 
 ---
