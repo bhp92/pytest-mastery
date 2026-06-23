@@ -1,7 +1,7 @@
 # exercises/week1_day1.py
 #
 # ╔══════════════════════════════════════════════════════════════╗
-# ║  PYTEST MASTERY — Week 1, Day 1 Exercise                    ║
+# ║  PYTEST MASTERY — Week 1, Day 1 Exercise                     ║
 # ║  Topic: Install & First Test                                 ║
 # ╚══════════════════════════════════════════════════════════════╝
 #
