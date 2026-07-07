@@ -70,6 +70,9 @@ def legacy_get_balance(account: dict) -> float:
 # Use pytest.raises as a context manager. No `match=` needed yet.
 
 # YOUR CODE HERE
+def test_withdraw_zero_amount_raises():
+    with pytest.raises(ValueError):
+        withdraw(100, 0)
 
 
 # ──────────────────────────────────────────────────────────────
@@ -85,7 +88,9 @@ def legacy_get_balance(account: dict) -> float:
 # anchor at the start of the string.
 
 # YOUR CODE HERE
-
+def test_withdraw_insufficient_funds_message():
+    with pytest.raises(ValueError, match=r"Insufficient"):
+        withdraw(50, 100)
 
 # ──────────────────────────────────────────────────────────────
 # TASK 3 — Inspecting exc_info after the block
@@ -101,7 +106,11 @@ def legacy_get_balance(account: dict) -> float:
 # not inside it. Write your answer as a one-line comment above the test.
 
 # YOUR CODE HERE
-
+def test_build_profile_negative_age_exc_info():
+    with pytest.raises(ValueError) as exc_info:
+        build_profile("Bob", -5)
+    assert "-5" in str(exc_info.value)
+    assert exc_info.type is ValueError
 
 # ──────────────────────────────────────────────────────────────
 # TASK 4 — pytest.warns
@@ -115,7 +124,10 @@ def legacy_get_balance(account: dict) -> float:
 #     (i.e. prove the warning fires AND the function still works)
 
 # YOUR CODE HERE
-
+def test_legacy_get_balance_warns():
+    with pytest.warns(DeprecationWarning, match=r"deprecated") as exc_info:
+        result = legacy_get_balance({"balance": 250})
+    assert result == 250
 
 # ──────────────────────────────────────────────────────────────
 # BONUS — Spot and fix the anti-pattern
@@ -134,5 +146,13 @@ def legacy_get_balance(account: dict) -> float:
 #
 # Then, as a comment, explain in one sentence why the broken version
 # would give you false confidence in a real codebase.
+# Reason: pytest.raises (and try/except) only protect the first raising 
+# line in a block — anything after it is dead code the moment an earlier
+#  line raises. Always isolate one call per assertion block, or you're testing nothing.
 
 # YOUR CODE HERE
+def test_withdraw_insufficient_funds_isolated():
+    with pytest.raises(ValueError):
+        build_profile("Eve", -1)
+    with pytest.raises(ValueError):
+        withdraw(50, 100)
