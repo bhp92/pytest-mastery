@@ -1,4 +1,4 @@
-# exercises/week1_day1.py
+# exercises/01_week1_day1.py
 #
 # ╔══════════════════════════════════════════════════════════════╗
 # ║  PYTEST MASTERY — Week 1, Day 1 Exercise                     ║

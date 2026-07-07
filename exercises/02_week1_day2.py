@@ -1,15 +1,20 @@
-"""
-WEEK 1 — DAY 2: Test Discovery Rules
-=====================================
-RUN INSTRUCTIONS:
-1. Place this file at exercises/week1_day1.py in your pytest-mastery checkout.
-2. As you complete each task, verify with:
-       pytest --collect-only exercises/week1_day1.py -v
-3. Once you THINK everything is fixed, run it for real:
-       pytest exercises/week1_day1.py -v
-4. Do the tasks in order — Task 3 depends on Task 2 being fixed first.
-5. No solutions here. Comments only. Predict before you verify.
-"""
+# exercises/01_week1_day1.py
+#
+# ╔══════════════════════════════════════════════════════════════╗
+# ║  PYTEST MASTERY — Week 1, Day 2 Exercise                     ║
+# ║  Topic: Test Discovery Rules                                 ║
+# ╚══════════════════════════════════════════════════════════════╝
+#
+# HOW TO RUN:
+#
+# 1. Place this file at exercises/week1_day1.py in your pytest-mastery checkout.
+# 2. As you complete each task, verify with:
+#       pytest --collect-only exercises/week1_day1.py -v
+# 3. Once you THINK everything is fixed, run it for real:
+#       pytest exercises/week1_day1.py -v
+# 4. Do the tasks in order — Task 3 depends on Task 2 being fixed first.
+# 5. No solutions here. Comments only. Predict before you verify.
+
 
 # ─────────────────────────────────────────────
 # TASK 1 — Fix the silent skip

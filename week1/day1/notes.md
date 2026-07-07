@@ -1,9 +1,5 @@
 # 🧪 Week 1, Day 1 — Install & First Test
 
----
-
-## STEP 1 — EXPLAIN THE TOPIC
-
 ### What is pytest and why does it exist?
 
 Python ships with `unittest`, which works but is verbose — you inherit from classes, call `self.assertEqual(...)`, and write a lot of boilerplate. pytest was built to fix that. It lets you write a plain function starting with `test_`, use a bare `assert` statement, and get rich, readable failure output automatically. No classes required, no inheritance, no ceremony.
@@ -53,16 +49,3 @@ This is Day 1 thinking: `assert` is powerful, but you must be precise about *wha
 **Mistake 2 — Writing `assert result == True` instead of `assert result`.** Asserting against the literal `True` introduces the `1 == True` trap above. The idiomatic pytest way is just `assert result` for truthy checks, or `assert result is True` when the boolean type specifically matters.
 
 ---
-
-## STEP 2 — WORKING EXAMPLE & STEP 3 — YOUR EXERCISE FILE
-
----
-
-Both files are ready. Here's your game plan:
-
-1. **Read** `week1_day1_example.py` — study the patterns, especially `pytest.raises`
-2. **Open** `exercises/week1_day1.py` and write your solutions under each task comment
-3. **Run** `pytest exercises/week1_day1.py -v` until all tests go green
-4. **Paste your solution here** and I'll do STEP 4 — review it the senior-engineer way
-
-One thing to keep in mind before you start: **Task 4 is the real test of Day 1.** Most beginners write `try/except` inside a test instead of using `pytest.raises`. If you reach for `pytest.raises` naturally, you're already thinking at the right level. Go for it.

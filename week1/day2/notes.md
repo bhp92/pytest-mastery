@@ -1,10 +1,15 @@
-## STEP 1 — Test Discovery Rules
+# 🧪 Week 1, Day 2 — Test Discovery Rules
+
+### What it is and why it exists
 
 **What it is:** Test discovery is pytest's algorithm for finding which files, classes, and functions to treat as tests — without you registering anything manually.
 
 **Why it exists:** Convention over configuration. On a real codebase with hundreds of test files, nobody wants to maintain a master list of "tests to run." You follow naming rules, and `pytest` just finds everything.
 
-**Key concepts you need cold:**
+---
+
+### Key concepts for Day 2
+
 - **Files:** `test_*.py` or `*_test.py`
 - **Functions:** must start with `test_`
 - **Classes:** must start with `Test`, must **not** define `__init__`, and their methods must start with `test_`
@@ -100,12 +105,17 @@
 - **Custom discovery:** `python_files`, `python_classes`, `python_functions` ini options let you override the `test_` convention entirely
 - **`--collect-only`:** shows exactly what would run, without running it — your best debugging tool for this topic
 
-**Real-world example:** In a monorepo CI pipeline, `testpaths` is set in `pyproject.toml` to scope discovery away from `node_modules/`, vendored deps, and build artifacts (`norecursedirs` handles this too). Senior teams often add a CI step that runs `pytest --collect-only -q` and asserts the collected count doesn't unexpectedly drop — that catches a test silently going dark from a naming/import bug before it costs you a missed regression.
+---
 
-**Top 2 beginner mistakes:**
+### One real-world production example
+
+In a monorepo CI pipeline, `testpaths` is set in `pyproject.toml` to scope discovery away from `node_modules/`, vendored deps, and build artifacts (`norecursedirs` handles this too). Senior teams often add a CI step that runs `pytest --collect-only -q` and asserts the collected count doesn't unexpectedly drop — that catches a test silently going dark from a naming/import bug before it costs you a missed regression.
+
+---
+
+### The 2 most common beginner mistakes
+
 1. **Silent skip** — writing `check_login()` instead of `test_login()`. No error, no warning — it just never runs. This is the dangerous one because it *looks* fine.
 2. **The `__init__` trap** — putting a constructor on a `Test` class. Pytest emits a `PytestCollectionWarning` and skips the *entire class*, not just one method.
 
-## STEP 2 — Working ExampleThat's real output, not a guess — exactly 4 collected, `TestBroken` skipped with the exact warning I described above. This is the file you'll get from `pytest --collect-only`.
-
-## STEP 3 — Your Exercise FileGo work through Tasks 1–4 and the bonus, then paste your solution here — I'll review it against what a senior engineer would actually write.
+---

@@ -10,7 +10,7 @@ Below are exact prompts — copy, paste, and customize.
 Paste this at the start of every Claude conversation:
 
 ```
-I am learning pytest using the pytest-mastery course (github.com/bhp92/pytest-mastery).
+I am learning pytest using the pytest-mastery course ([github.com/bhp92/pytest-mastery](https://github.com/bhp92/pytest-mastery)).
 My goal is to be interview-ready at a senior (6-year experience) level.
 
 Today is: Week [] Day [] — [Topic Name]
@@ -27,7 +27,7 @@ STEP 2 — SHOW ME A WORKING EXAMPLE
 Write a clean commented code example demonstrating today's topic.
 
 STEP 3 — CREATE MY EXERCISE FILE
-Create a file called exercises/week1_day1.py with:
+Create a file called exercises/week<current week number>_ day<current day number>.py with:
 - 4 tasks I must complete myself (comments only, no solutions)
 - Tasks build on each other
 - A BONUS task at the bottom
@@ -40,6 +40,11 @@ STEP 4 — AFTER I PASTE MY SOLUTION
 - One thing to remember from today
 
 I am ready. Please start with STEP 1.
+
+Important note:
+1. If you can not access github repo, stop and let know.
+2. If you can not access any required file, stop let know.
+3. No speculating and guessing around and going off rails if required inputs are not found.
 ```
 
 ---
