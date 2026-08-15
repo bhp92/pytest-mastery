@@ -128,7 +128,3 @@ Students and teachers are welcome to:
 - Add real-world examples (Django, FastAPI, etc.)
 
 ---
-
-## 📄 License
-
-MIT — free to use, share, and teach with.

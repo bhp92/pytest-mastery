@@ -17,8 +17,8 @@
 
     - Definition: conftest.py is a speacial pytest file that holds fixtures, hooks and configuration shared automatically across all test files in its directories and subdirectories. conftest.py do not require any import.
     - Why it exists: Without it, you'd face two problems.:
-        1. Duplication: If five test files need a database connection, you'd wrute the setup code five times, or import it manually eveywhere.
-        2. Implicit imports feel wrong: pytest wants you to just use a fixture by naming it as a test argument, not "from helpers import db_fixture" in every file. conftest.py is how pytest makes fixtures "ambient", visible to any testin scope without an import statement.
+        1. Duplication: If five test files need a database connection, you'd write the setup code five times, or import it manually eveywhere.
+        2. Implicit imports feel wrong: pytest wants you to just use a fixture by naming it as a test argument, not "from helpers import db_fixture" in every file. conftest.py is how pytest makes fixtures "ambient", visible to any test in scope without an import statement.
 
     It also solves a scoping problem: you can have multiple conftest.py files at different folder levels, and pytest merges them based on directory hierarchy. A fixture in tests/conftest.py is available everywhere under tests/; one in tests/api/conftest.py is only available under tests/api/.
 
