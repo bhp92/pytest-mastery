@@ -1,3 +1,3 @@
 def test_something():
     print("I am running")
-    assert 1 + 1 == 3
+    assert 1 + 1 == 2
